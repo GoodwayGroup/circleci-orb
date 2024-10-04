@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   cli: circleci/circleci-cli@0.1.9
-  orb-tools: circleci/orb-tools@10.0.3
+  orb-tools: circleci/orb-tools@10.1.0
 
 jobs:
   pack:
@@ -22,7 +22,7 @@ jobs:
             - '*'
   publish:
     docker:
-      - image: cimg/node:20.5
+      - image: cimg/node:20.18
     steps:
       - attach_workspace:
           at: .
