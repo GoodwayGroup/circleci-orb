@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   cli: circleci/circleci-cli@0.1.9
-  orb-tools: circleci/orb-tools@10.0.3
+  orb-tools: circleci/orb-tools@12.1.1
 
 jobs:
   pack:
