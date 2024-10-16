@@ -22,7 +22,7 @@ jobs:
             - '*'
   publish:
     docker:
-      - image: cimg/node:20.5
+      - image: cimg/node:23.0
     steps:
       - attach_workspace:
           at: .
