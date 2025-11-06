@@ -3,8 +3,8 @@ description: Install dependencies and run test command
 parameters:
   executor-name:
     type: enum
-    default: "build-images"
-    enum: ["build-images", "dockerhub-authed", "ecr-authed", "node-default"]
+    default: 'build-images'
+    enum: ['build-images', 'dockerhub-authed', 'ecr-authed', 'node-default']
   executor-tag:
     type: string
     default: node-12
@@ -25,7 +25,7 @@ parameters:
     default: v0-dependencies
   coveralls-upload:
     type: boolean
-    default: true
+    default: false # coveralls is no longer supported
   test-steps:
     type: steps
     default:
