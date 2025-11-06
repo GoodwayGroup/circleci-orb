@@ -3,7 +3,7 @@ description: Install dependencies and run test command
 parameters:
   executor-tag:
     type: string
-    default: "3.11.2"
+    default: '3.11.2'
   executor-resource-class:
     default: large
     description: Configure the executor resource class
@@ -21,7 +21,7 @@ parameters:
     default: v0-dependencies
   coveralls-upload:
     type: boolean
-    default: true
+    default: false # coveralls is no longer supported
   coveralls-steps:
     default:
       - run:
@@ -76,7 +76,7 @@ steps:
   - test-python:
       cache-key: << parameters.cache-key >>
       coveralls-upload: << parameters.coveralls-upload >>
-      coveralls-steps:  << parameters.coveralls-steps >>
+      coveralls-steps: << parameters.coveralls-steps >>
       test-steps: << parameters.test-steps >>
       lint: << parameters.lint >>
       lint-steps: << parameters.lint-steps >>
