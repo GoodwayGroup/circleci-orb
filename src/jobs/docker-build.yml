@@ -3,11 +3,11 @@ description: Docker image build and push
 parameters:
   executor-name:
     type: enum
-    default: "build-images"
-    enum: ["build-images", "dockerhub-authed", "ecr-authed"]
+    default: 'node-default'
+    enum: ['build-images', 'dockerhub-authed', 'ecr-authed', 'node-default']
   executor-tag:
     type: string
-    default: node-12
+    default: lts
   executor-resource-class:
     default: medium
     description: Configure the executor resource class
@@ -23,7 +23,7 @@ parameters:
   registry-type:
     type: enum
     default: dockerhub
-    enum: ["dockerhub", "ecr"]
+    enum: ['dockerhub', 'ecr']
   registry-url:
     type: env_var_name
     default: DOCKER_REGISTRY
@@ -42,6 +42,9 @@ parameters:
   pre-push-steps:
     type: steps
     default: []
+  post-push-steps:
+    type: steps
+    default: []
   use-docker-layer-caching:
     type: boolean
     default: true
@@ -50,7 +53,7 @@ parameters:
     type: string
   additional-tags:
     type: string
-    default: ""
+    default: ''
     description: Space separated names for additional images tags.
 
 executor:
@@ -70,3 +73,4 @@ steps:
       use-docker-layer-caching: << parameters.use-docker-layer-caching >>
       extra-build-args: << parameters.extra-build-args >>
       additional-tags: << parameters.additional-tags >>
+      post-push-steps: << parameters.post-push-steps >>

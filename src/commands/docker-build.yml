@@ -4,7 +4,7 @@ parameters:
   registry-type:
     type: enum
     default: dockerhub
-    enum: ["dockerhub", "ecr"]
+    enum: ['dockerhub', 'ecr']
   registry-url:
     type: env_var_name
     default: DOCKER_REGISTRY
@@ -23,6 +23,9 @@ parameters:
   pre-push-steps:
     type: steps
     default: []
+  post-push-steps:
+    type: steps
+    default: []
   use-docker-layer-caching:
     type: boolean
     default: true
@@ -31,7 +34,7 @@ parameters:
     type: string
   additional-tags:
     type: string
-    default: ""
+    default: ''
     description: Space separated names for additional images tags.
 
 steps:
@@ -41,7 +44,7 @@ steps:
 
   - when:
       condition:
-        equal: ["ecr", << parameters.registry-type >>]
+        equal: ['ecr', << parameters.registry-type >>]
       steps:
         - aws-ecr/ecr-login:
             account-url: << parameters.registry-url >>
@@ -49,7 +52,7 @@ steps:
 
   - when:
       condition:
-        equal: ["dockerhub", << parameters.registry-type >>]
+        equal: ['dockerhub', << parameters.registry-type >>]
       steps:
         - docker/check:
             docker-password: DOCKER_PASS
@@ -84,3 +87,4 @@ steps:
             image: ${<< parameters.image-namespace >>}/${<< parameters.image-repo >>}
             tag-env: DOCKER_TAG
             registry: ${<< parameters.registry-url >>}
+        - steps: << parameters.post-push-steps >>
