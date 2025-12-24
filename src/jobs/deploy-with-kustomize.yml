@@ -37,7 +37,7 @@ parameters:
     default:
   cluster-name:
     type: string
-    default:
+    default: ''
 
 executor:
   name: python-default
