@@ -8,6 +8,18 @@ parameters:
   executor-tag:
     type: string
     default: '3.10'
+  executor-resource-class:
+    default: small
+    description: Configure the executor resource class
+    enum:
+      - small
+      - medium
+      - medium+
+      - large
+      - xlarge
+      - 2xlarge
+      - 2xlarge+
+    type: enum
   kube-path:
     type: string
     default: .kube/
@@ -30,9 +42,9 @@ parameters:
 executor:
   name: python-default
   tag: << parameters.executor-tag >>
+  resource_class: << parameters.executor-resource-class >>
 
 steps:
-
   - unless:
       condition: << parameters.cluster-name >>
       steps:
@@ -57,4 +69,3 @@ steps:
             post-deploy-steps: << parameters.post-deploy-steps >>
             deployment-resource-name: << parameters.deployment-resource-name >>
             notification-channel: << parameters.notification-channel >>
-
