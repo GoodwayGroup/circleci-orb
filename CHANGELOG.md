@@ -1,3 +1,17 @@
+# [2.10.0](https://github.com/GoodwayGroup/circleci-orb/compare/v2.9.2...v2.10.0) (2025-12-24)
+
+
+### Bug Fixes
+
+* cluster-name param default value ([0ad763e](https://github.com/GoodwayGroup/circleci-orb/commit/0ad763e4e42c611f039a771dcae91cab3fca4b2f))
+* increased git msg max body length for releases ([#101](https://github.com/GoodwayGroup/circleci-orb/issues/101)) ([2482466](https://github.com/GoodwayGroup/circleci-orb/commit/24824667372d327aa880ff70f08162253852f015))
+
+
+### Features
+
+* adding resource-class param to deploy-with-kustomize ([d5aec85](https://github.com/GoodwayGroup/circleci-orb/commit/d5aec8555d70da81f450ecf07cc1bbd553cd301f))
+* defaulting docker-build to use cim/node as executor ([9bded5d](https://github.com/GoodwayGroup/circleci-orb/commit/9bded5de20c432e28fdf983b6f7a43b29f1a39a0))
+
 ## [2.9.2](https://github.com/GoodwayGroup/circleci-orb/compare/v2.9.1...v2.9.2) (2024-10-24)
 
 
