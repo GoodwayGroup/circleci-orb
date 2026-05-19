@@ -32,8 +32,18 @@ steps:
   - run:
       name: 'Install Kustomize'
       command: |
-        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-        sudo mv kustomize /usr/local/bin
+        KUSTOMIZE_VERSION="v5.4.3"
+        case "$(uname -m)" in
+          x86_64)        ARCH=amd64 ;;
+          aarch64|arm64) ARCH=arm64 ;;
+          *) echo "Unsupported arch $(uname -m)"; exit 1 ;;
+        esac
+        curl -fsSL \
+          "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_${ARCH}.tar.gz" \
+          -o /tmp/kustomize.tar.gz
+        tar -xzf /tmp/kustomize.tar.gz -C /tmp
+        sudo install -m 0755 /tmp/kustomize /usr/local/bin/kustomize
+        kustomize version
 
   - run:
       name: 'Build Deployment Manifest'
