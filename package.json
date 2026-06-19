@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "commit": "npx git-cz --disable-emoji",
-    "pack": "circleci config pack src > packed-orb.yml",
+    "pack": "circleci orb pack src/ > packed-orb.yml",
     "pretest": "npm run pack",
     "semantic-release": "semantic-release",
     "test": "circleci orb validate packed-orb.yml",

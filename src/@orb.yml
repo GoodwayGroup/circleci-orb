@@ -12,5 +12,5 @@ orbs:
   aws-eks: circleci/aws-eks@2.2.0
   coveralls: coveralls/coveralls@1.0.6
   docker: circleci/docker@1.2.1
-  kubernetes: circleci/kubernetes@1.3.1
+  kubernetes: circleci/kubernetes@2.0.2
   slack: circleci/slack@4.13.2
