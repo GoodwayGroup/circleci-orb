@@ -41,6 +41,10 @@ steps:
 
   - run:
       name: 'Set deployment image tag'
+      environment:
+        KUSTOMIZE_PATH: << parameters.kustomize-path >>
+        KUSTOMIZE_IMAGE_NAME: << parameters.kustomize-image-name >>
+        IMAGE_NAME: << parameters.image-name >>
       command: <<include(scripts/set-kustomize-image.sh)>>
 
   # Conditionally wait for rollout to complete

@@ -3,10 +3,10 @@
 # Included by the deploy-with-kustomize command. Updates kustomization.yaml in
 # place so kubectl apply -k can deploy the built image tag.
 #
-# Orb parameters (substituted when the orb is packed):
-#   kustomize-path        Directory containing kustomization.yaml
-#   kustomize-image-name  Kustomize images[].name to match (default: app)
-#   image-name            Full image reference without tag (usually the ECR URL)
+# Orb parameters (passed via the run step environment block):
+#   KUSTOMIZE_PATH        Directory containing kustomization.yaml
+#   KUSTOMIZE_IMAGE_NAME  Kustomize images[].name to match (default: app)
+#   IMAGE_NAME            Full image reference without tag (usually the ECR URL)
 #
 # Runtime environment:
 #   DOCKER_TAG            Image tag from the determine-docker-tag command
@@ -41,9 +41,7 @@
 #   Match by short name:
 #     kustomize-image-name=fastapi-demo
 #     -> updates the entry whose images[].name is fastapi-demo
-cd <<parameters.kustomize-path>>
-export KUSTOMIZE_IMAGE_NAME='<<parameters.kustomize-image-name>>'
-export IMAGE_NAME='<<parameters.image-name>>'
+cd "$KUSTOMIZE_PATH"
 export DOCKER_TAG="$DOCKER_TAG"
 python3 <<'PY'
 """Update kustomization.yaml images for deploy-with-kustomize."""
