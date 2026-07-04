@@ -21,6 +21,13 @@ parameters:
   notification-channel:
     type: string
     default:
+  github-pat-env:
+    type: env_var_name
+    default: GITHUB_PAT
+    description: |
+      Name of a CircleCI env var containing a GitHub PAT.
+      When set and non-empty, the install script is downloaded with authentication.
+      When unset or empty, downloads without auth.
 
 steps:
   - checkout
@@ -32,7 +39,16 @@ steps:
   - run:
       name: 'Install Kustomize'
       command: |
-        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+        INSTALL_URL="https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
+        PAT="${<< parameters.github-pat-env >>}"
+
+        if [ -n "$PAT" ]; then
+          echo "Downloading install_kustomize.sh with GitHub authentication (<< parameters.github-pat-env >>)"
+          curl -sf -H "Authorization: Bearer ${PAT}" "$INSTALL_URL" | bash
+        else
+          echo "Downloading install_kustomize.sh without authentication (<< parameters.github-pat-env >> not set)"
+          curl -sf "$INSTALL_URL" | bash
+        fi
         sudo mv kustomize /usr/local/bin
 
   - run:

@@ -38,6 +38,11 @@ parameters:
   cluster-name:
     type: string
     default: ''
+  github-pat-env:
+    type: env_var_name
+    default: GITHUB_PAT
+    description: |
+      Name of a CircleCI env var containing a GitHub PAT for downloading install_kustomize.sh.
 
 executor:
   name: python-default
@@ -57,6 +62,7 @@ steps:
             post-deploy-steps: << parameters.post-deploy-steps >>
             deployment-resource-name: << parameters.deployment-resource-name >>
             notification-channel: << parameters.notification-channel >>
+            github-pat-env: << parameters.github-pat-env >>
   - when:
       condition: << parameters.cluster-name >>
       steps:
@@ -69,3 +75,4 @@ steps:
             post-deploy-steps: << parameters.post-deploy-steps >>
             deployment-resource-name: << parameters.deployment-resource-name >>
             notification-channel: << parameters.notification-channel >>
+            github-pat-env: << parameters.github-pat-env >>
