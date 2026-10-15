@@ -22,7 +22,7 @@ jobs:
             - '*'
   publish:
     docker:
-      - image: cimg/node:20.5
+      - image: cimg/node:22.23.3
     steps:
       - attach_workspace:
           at: .
@@ -39,14 +39,19 @@ jobs:
             - v0-dependencies-{{ checksum "package-lock.json" }}
       - run:
           name: Dependency Install
-          command: npm install --force --no-save
+          command: npm ci
       - save_cache:
           paths:
             - node_modules
           key: v0-dependencies-{{ checksum "package-lock.json" }}
       - run:
           name: Publish to CircleCI Orb Registry
-          command: npm run semantic-release
+          command: |
+            # CLI v1 reads CIRCLE_TOKEN. This project stores the publish token as CIRCLECI_API_TOKEN.
+            if [ -z "${CIRCLE_TOKEN:-}" ] && [ -n "${CIRCLECI_API_TOKEN:-}" ]; then
+              export CIRCLE_TOKEN="${CIRCLECI_API_TOKEN}"
+            fi
+            npm run semantic-release
 
 workflows:
   btd:

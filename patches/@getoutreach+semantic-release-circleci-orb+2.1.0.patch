@@ -1,0 +1,37 @@
+diff --git a/node_modules/@getoutreach/semantic-release-circleci-orb/lib/publish.js b/node_modules/@getoutreach/semantic-release-circleci-orb/lib/publish.js
+index 921174d..8e550e5 100755
+--- a/node_modules/@getoutreach/semantic-release-circleci-orb/lib/publish.js
++++ b/node_modules/@getoutreach/semantic-release-circleci-orb/lib/publish.js
+@@ -1,6 +1,14 @@
+ import { execa } from "execa";
+ import resolveConfig from "./resolve-config.js";
+ 
++// CLI v1 reads CIRCLE_TOKEN and rejects --token. CLI v0 still requires --token.
++async function cliAcceptsTokenFlag(commandName, cwd, env) {
++  const { stdout } = await execa(commandName, ["version"], { cwd, env, reject: false });
++  const match = String(stdout || "").match(/(\d+)\.\d+/);
++  const major = match ? Number(match[1]) : 1;
++  return major < 1;
++}
++
+ export default async (pluginConfig, context) => {
+   const {
+     cwd,
+@@ -25,10 +33,15 @@ export default async (pluginConfig, context) => {
+   }
+ 
+   const orbRef = `${orbName}@${nextVersion}`;
++  const args = ["orb", "publish", orbPath, orbRef];
++  const publishEnv = { ...env, CIRCLE_TOKEN: circleciToken };
++  if (await cliAcceptsTokenFlag(commandName, cwd, env)) {
++    args.push("--token", circleciToken);
++  }
+ 
+-  const result = execa(commandName, ["orb", "publish", orbPath, orbRef, "--token", circleciToken], {
++  const result = execa(commandName, args, {
+     cwd,
+-    env,
++    env: publishEnv,
+   });
+   result.stdout.pipe(stdout, { end: false });
+   result.stderr.pipe(stderr, { end: false });
